@@ -1,5 +1,31 @@
 import numpy as np
 
+def mindistance(triangle1,triangle2):
+
+    # Initialize a variable to store the minimum distance
+    min_distance = float('inf')
+
+    # Loop through all vertices of triangle 1
+    for i in range(3):
+        # Calculate the equation of the plane defined by triangle 2
+        normal = np.cross(triangle2[1]-triangle2[0], triangle2[2]-triangle2[0])
+        d = -np.dot(normal, triangle2[0])
+        denom = np.dot(normal, normal)
+
+        # Find the coordinates of the closest point on the plane of triangle 2 to the current vertex
+        num = np.dot(normal, triangle1[i]) + d
+        closest_point = triangle1[i] - (num/denom)*normal
+        
+        # Calculate the distance between the current vertex and the closest point
+        distance = np.linalg.norm(triangle1[i]-closest_point)
+        
+        # Update the minimum distance if necessary
+        min_distance = min(min_distance, distance)
+
+    print("Minimum distance between the two triangles:", min_distance)
+    
+    
+    
 def gjk(shape1, shape2):
     # Initialize the search direction to be the negative of the difference between the centroids of the two shapes
     d = shape1.mean(axis=0) - shape2.mean(axis=0)
